@@ -97,20 +97,20 @@ def edit_distance_dp(str1, str2):
     cols = len(str2) + 1
     dp_table = [[0 for j in range(cols)] for i in range(rows)]
 
-    # TODO: Fill in the table using a nested for loop.
     for row in range(rows):
-        for col in range(cols):
-            if row == 0 or col == 0:
-                dp_table[row][col] == max(row, col)
+        dp_table[row][0] = row
 
-            elif str1[row-1] == str2[col-1]:
+    for col in range(cols):
+        dp_table[0][col] = col
+
+    for row in range(1,rows):
+        for col in range(1,cols):
+            if str1[row-1] == str2[col-1]:
                 dp_table[row][col] = dp_table[row-1][col-1]
-
             else:
                 insert = dp_table[row][col-1]
                 delete = dp_table[row-1][col]
                 replace = dp_table[row-1][col-1]
-
-                dp_table[row][col] = 1 + min(insert, delete, replace)
+                dp_table[row][col] = min(insert, delete, replace) + 1
 
     return dp_table[rows-1][cols-1]
